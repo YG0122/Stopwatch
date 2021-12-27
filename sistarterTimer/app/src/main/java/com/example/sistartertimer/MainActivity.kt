@@ -61,6 +61,9 @@ class MainActivity : AppCompatActivity() {
 
 
         timerTask = timer(period = 1000) {
+
+            //if (sec == 0 && min == 0 && hour == 0) timerTask?.cancel()
+
             time++
 
             when {
@@ -77,7 +80,7 @@ class MainActivity : AppCompatActivity() {
                     sec = 60
                     sec--
                 }
-                sec == 1 -> timerTask?.cancel()
+                //sec == 1 -> timerTask?.cancel()
                 //else -> timerTask?.cancel()
             }
 
@@ -87,6 +90,7 @@ class MainActivity : AppCompatActivity() {
                 minOut.text = String.format("%02d", min)
                 secOut.text = String.format("%02d", sec)
             }
+            if (sec == 0 && min == 0 && hour == 0) timerTask?.cancel()
         }
     }
 
