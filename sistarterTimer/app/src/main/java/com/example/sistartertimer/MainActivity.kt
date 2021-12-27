@@ -2,6 +2,7 @@ package com.example.sistartertimer
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -35,11 +36,56 @@ class MainActivity : AppCompatActivity() {
     private fun start() {
         fab_start.setImageResource(R.drawable.ic_pause_black_24p)
 
+        timeIn.visibility = View.GONE
+        timeOut.visibility = View.VISIBLE
+
+        hourOut.text = hourIn.text.toString()
+        minOut.text = minIn.text.toString()
+        secOut.text = secIn.text.toString()
+
+        var hour: Int = if (hourIn.text.toString() == "") {
+            0
+        } else {
+            hourIn.text.toString().toInt()
+        }
+        var min: Int = if (minIn.text.toString() == "") {
+            0
+        } else {
+            minIn.text.toString().toInt()
+        }
+        var sec: Int = if (secIn.text.toString() == "") {
+            0
+        } else {
+            secIn.text.toString().toInt()
+        }
+
+
         timerTask = timer(period = 1000) {
             time++
 
+            when {
+                sec != 0 -> sec--
+                min != 0 -> {
+                    sec = 60
+                    sec--
+                    min--
+                }
+                hour != 0 -> {
+                    min = 60
+                    hour--
+                    min--
+                    sec = 60
+                    sec--
+                }
+                sec == 1 -> timerTask?.cancel()
+                //else -> timerTask?.cancel()
+            }
+
             runOnUiThread {
                 timeText.text = formatTime(time)
+                hourOut.text = String.format("%02d", hour)
+                minOut.text = String.format("%02d", min)
+                secOut.text = String.format("%02d", sec)
             }
         }
     }
@@ -56,6 +102,9 @@ class MainActivity : AppCompatActivity() {
         isRunning = false
         fab_start.setImageResource(R.drawable.ic_play)
         timeText.text = "00:00:00"
+
+        timeIn.visibility = View.VISIBLE
+        timeOut.visibility = View.GONE
 
         lap_Layout.removeAllViews()
         index = 1
