@@ -47,6 +47,11 @@ class MainActivity : AppCompatActivity() {
         minOut.text = formatTime(min)
         secOut.text = formatTime(sec)
 
+        hourIn.text = null
+        minIn.text = null
+        secIn.text = null
+
+
         val timer = Timer()
         timer.schedule(object : TimerTask(){
 
@@ -75,7 +80,8 @@ class MainActivity : AppCompatActivity() {
                     minOut.text = formatTime(min)
                     secOut.text = formatTime(sec)
                 }
-                if (sec == 0 && min == 0 && hour == 0) timer?.cancel()
+
+                if (sec == 0 && min == 0 && hour == 0) timer.cancel()
             }
 
         }, 1000, 1000)
